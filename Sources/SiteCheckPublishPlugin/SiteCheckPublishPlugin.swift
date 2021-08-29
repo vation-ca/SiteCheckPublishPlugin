@@ -36,8 +36,8 @@ var linksKnown: ArchiveDict = [:]
 var newLinksFound: Set<String> = []
 var scanDate: Date = Date()
 var httpClient: HTTPClient? = nil
-public func loadArchiveLinks() {
-  if (thisFile?.parent!.containsFile(at: "Reports/linkarchive.json")) != nil {
+public func loadArchiveLinks(anchor: File) {
+  if (anchor.parent!.containsFile(at: "Reports/linkarchive.json")) != nil {
     if let archivedata = try? thisFile?.parent!.file(at: "Reports/linkarchive.json").read() {
       let decoder = JSONDecoder()
       if #available(macOS 10.12, *) {
@@ -50,7 +50,7 @@ public func loadArchiveLinks() {
   }
 }
 @available(macOS 10.12, *)
-public func archiveLinks() {
+public func archiveLinks(anchor: File) {
   if !linksKnown.isEmpty {
     let encoder = JSONEncoder()
     if #available(macOS 10.15, *) {
@@ -62,7 +62,7 @@ public func archiveLinks() {
 
     if let data = try? encoder.encode(linksKnown) {
       //            print(String(data: data, encoding: .utf8)!)
-      try! thisFile?.parent!.createFileIfNeeded(at: "Reports/linkarchive.json").write(data)
+      try! anchor.parent!.createFileIfNeeded(at: "Reports/linkarchive.json").write(data)
     }
   }
 
