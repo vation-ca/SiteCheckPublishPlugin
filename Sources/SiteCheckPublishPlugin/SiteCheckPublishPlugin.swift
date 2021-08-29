@@ -29,6 +29,7 @@ class LinkStatus: Codable {
 }
 public var allowedMailAddresses: Set<String> = []
 public var logger = Logger(label: "publishsite.main")
+public var baseFolder: Folder?
 public var maxLinksToCheckPerScan = 3
 
 typealias ArchiveDict = [String: LinkStatus]
@@ -37,8 +38,8 @@ var newLinksFound: Set<String> = []
 var scanDate: Date = Date()
 var httpClient: HTTPClient? = nil
 public func loadArchiveLinks(anchor: Folder) {
-  if (anchor.parent!.containsFile(at: "Reports/linkarchive.json")) != nil {
-    if let archivedata = try? anchor.parent!.file(at: "Reports/linkarchive.json").read() {
+  if let folderBase = baseFolder, folderBase.containsFile(at: "Reports/linkarchive.json") {
+    if let archivedata = try? folderBase.file(at: "Reports/linkarchive.json").read() {
       let decoder = JSONDecoder()
       if #available(macOS 10.12, *) {
         decoder.dateDecodingStrategy = .iso8601
@@ -50,7 +51,7 @@ public func loadArchiveLinks(anchor: Folder) {
   }
 }
 @available(macOS 10.12, *)
-public func archiveLinks(anchor: Folder) {
+public func archiveLinks() {
   if !linksKnown.isEmpty {
     let encoder = JSONEncoder()
     if #available(macOS 10.15, *) {
@@ -62,7 +63,7 @@ public func archiveLinks(anchor: Folder) {
 
     if let data = try? encoder.encode(linksKnown) {
       //            print(String(data: data, encoding: .utf8)!)
-      try! anchor.parent!.createFileIfNeeded(at: "Reports/linkarchive.json").write(data)
+      try? baseFolder?.createFileIfNeeded(at: "Reports/linkarchive.json").write(data)
     }
   }
 
@@ -116,7 +117,7 @@ public extension Plugin {
   static var pageScan: Self {
     Plugin(name: "Collect all the published links") { context in
       if linksKnown.isEmpty {
-        loadArchiveLinks(anchor:context.folder.output)
+        loadArchiveLinks()
       }
       try context.outputFolder(at: "").subfolders.recursive.forEach { folder in
         let prefixLength = try context.outputFolder(at: "").path.count
