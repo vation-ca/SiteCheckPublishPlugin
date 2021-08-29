@@ -116,7 +116,7 @@ public extension Plugin {
   static var pageScan: Self {
     Plugin(name: "Collect all the published links") { context in
       if linksKnown.isEmpty {
-        loadArchiveLinks()
+        loadArchiveLinks(anchor:context.folder.output)
       }
       try context.outputFolder(at: "").subfolders.recursive.forEach { folder in
         let prefixLength = try context.outputFolder(at: "").path.count
