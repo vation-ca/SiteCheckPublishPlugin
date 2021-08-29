@@ -38,7 +38,7 @@ var scanDate: Date = Date()
 var httpClient: HTTPClient? = nil
 public func loadArchiveLinks(anchor: File) {
   if (anchor.parent!.containsFile(at: "Reports/linkarchive.json")) != nil {
-    if let archivedata = try? thisFile?.parent!.file(at: "Reports/linkarchive.json").read() {
+    if let archivedata = try? anchor.parent!.file(at: "Reports/linkarchive.json").read() {
       let decoder = JSONDecoder()
       if #available(macOS 10.12, *) {
         decoder.dateDecodingStrategy = .iso8601
