@@ -14,7 +14,7 @@ let package = Package(
     dependencies: [
 .package(name: "SwiftSoup",url: "https://github.com/scinfu/SwiftSoup.git", from: "1.7.5"),
 .package(name: "Publish",url:"https://github.com/johnsundell/publish.git", from: "0.8.0"),
-.package(name: "AsyncHTTPClient", url: "https://github.com/swift-server/async-http-client.git", from: "1.0.0")
+.package(url: "https://github.com/swift-server/async-http-client.git", from: "1.0.0")
 
     ],
     targets: [
@@ -22,7 +22,10 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "SiteCheckPublishPlugin",
-            dependencies: ["Publish","SwiftSoup","AsyncHTTPClient"]),
+            dependencies: ["Publish","SwiftSoup",
+            .product(name: "AsyncHTTPClient", package: "async-http-client")
+
+            ]),
         .testTarget(
             name: "SiteCheckPublishPluginTests",
             dependencies: ["SiteCheckPublishPlugin"]),
