@@ -8,6 +8,7 @@
 import AsyncHTTPClient
 import Foundation
 import Publish
+import Files
 import SwiftSoup
 import Logging
 
