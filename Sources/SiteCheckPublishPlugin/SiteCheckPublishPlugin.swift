@@ -107,6 +107,7 @@ public func checkSomeLinks() {
         }
       }
     }
+    try? httpClient?.syncShutdown()
   }
 }
 
