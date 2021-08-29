@@ -37,7 +37,7 @@ var linksKnown: ArchiveDict = [:]
 var newLinksFound: Set<String> = []
 var scanDate: Date = Date()
 var httpClient: HTTPClient? = nil
-public func loadArchiveLinks(anchor: Folder) {
+public func loadArchiveLinks() {
   if let folderBase = baseFolder, folderBase.containsFile(at: "Reports/linkarchive.json") {
     if let archivedata = try? folderBase.file(at: "Reports/linkarchive.json").read() {
       let decoder = JSONDecoder()
