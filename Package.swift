@@ -14,9 +14,9 @@ let package = Package(
             targets: ["SiteCheckPublishPlugin"]),
     ],
     dependencies: [
-.package(name: "SwiftSoup",url: "https://github.com/scinfu/SwiftSoup.git", from: "1.7.5"),
+.package(url: "https://github.com/scinfu/SwiftSoup.git", from: "2.3.8"),
 .package(name: "Publish",url:"https://github.com/johnsundell/publish.git", .branch("swift-concurrency")), // from: "0.8.0"),
-.package(url: "https://github.com/swift-server/async-http-client.git", from: "1.0.0")
+.package(url: "https://github.com/swift-server/async-http-client.git", from: "1.9.0")
 
     ],
     targets: [

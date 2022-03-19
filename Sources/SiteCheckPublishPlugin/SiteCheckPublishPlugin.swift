@@ -69,17 +69,17 @@ public func archiveLinks() {
 
 }
 func linkStatusSort(
-  _ lhs: (key1: String, val1: LinkStatus), _ rhs: (key2: String, val2: LinkStatus)
+  _ lhs: (key: String, value: LinkStatus), _ rhs: (key: String, value: LinkStatus)
 ) -> Bool {
-  if lhs.val1.lastFound < rhs.val2.lastFound {
+  if lhs.value.lastFound < rhs.value.lastFound {
     return false  // want links still in use checked before really old ones
-  } else if lhs.val1.firstFound < rhs.val2.firstFound {
+  } else if lhs.value.firstFound < rhs.value.firstFound {
     return false  // want links just found to get checked first
-  } else if rhs.val2.lastCheck == nil {
+  } else if rhs.value.lastCheck == nil {
     return true  // if no check yet then keep at top of the list to check
-  } else if lhs.val1.lastCheck == nil {
+  } else if lhs.value.lastCheck == nil {
     return true  // if no check yet then keep at top of the list to check
-  } else if lhs.val1.lastCheck! < rhs.val2.lastCheck! {  // force unwrap should be OK here due to the previous nil checks
+  } else if lhs.value.lastCheck! < rhs.value.lastCheck! {  // force unwrap should be OK here due to the previous nil checks
     return true
   }
   return true
@@ -87,7 +87,7 @@ func linkStatusSort(
 
 public func checkSomeLinks() {
   if !linksKnown.isEmpty {
-    let linksToCheck = linksKnown.sorted(by: linkStatusSort)
+    let linksToCheck = linksKnown.sorted(by: linkStatusSort) //{linkStatusSort($0,$1)}
     httpClient = HTTPClient(eventLoopGroupProvider: .createNew,
                             configuration: HTTPClient.Configuration(redirectConfiguration: .disallow))
 
