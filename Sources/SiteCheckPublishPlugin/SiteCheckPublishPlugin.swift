@@ -18,6 +18,7 @@ class LinkStatus: Codable {
   var lastFound: Date
   var lastFileSeen: Path?
   var lastCheck: Date?
+  var responseStatus: String?
   var redirectURL: URL?
   init(link: URL, path: Path) {
     self.link = link
@@ -97,14 +98,16 @@ public func checkSomeLinks() {
 
       if let response = try? httpClient!.get(url: linksToCheck[indx].1.link.absoluteString).wait()
       {  //, logger: logger
-
+        linksKnown[linksToCheck[indx].0]?.lastCheck = Date()
+        linksKnown[linksToCheck[indx].0]?.responseStatus = response.status.reasonPhrase
         if response.status == .ok {
           // handle response
           logger.debug("👍🏻\(linksToCheck[indx].0)")
-          linksKnown[linksToCheck[indx].0]?.lastCheck = Date()
+         
         } else {
           logger.warning(
-            "\(response.status) Link check failed❓: \(linksToCheck[indx].1.link.absoluteString)")  // should append this to a log to investigate
+            "\(response.status.reasonPhrase) Link check failed❓: \(linksToCheck[indx].1.link.absoluteString)")  // should append this to a log to investigate
+          
         }
       }
     }

@@ -15,8 +15,8 @@ let package = Package(
     ],
     dependencies: [
 .package(url: "https://github.com/scinfu/SwiftSoup.git", from: "2.3.8"),
-.package(name: "Publish",url:"https://github.com/johnsundell/publish.git", .branch("swift-concurrency")), // from: "0.8.0"),
-.package(url: "https://github.com/swift-server/async-http-client.git", from: "1.9.0")
+.package(name: "Publish",url:"https://github.com/johnsundell/publish.git",  from: "0.9.0"),
+.package(url: "https://github.com/swift-server/async-http-client.git", from: "1.10.0")
 
     ],
     targets: [
